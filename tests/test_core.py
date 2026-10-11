@@ -4,7 +4,7 @@ from unittest.mock import patch
 import httpx
 from agent_readiness.core import evaluate
 
-HTML = '<html lang="en"><head><title>Acme</title><meta name="description" content="Acme"><script type="application/ld+json">{"@type":"Organization","name":"Acme"}</script></head><body><main>Hi</main></body></html>'
+HTML = '<html lang="en"><head><title>Acme</title><meta name="description" content="Acme"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Acme"}</script></head><body><main>Hi</main></body></html>'
 
 def client_for(html=HTML, api=None, robots=200):
     def handler(request):
