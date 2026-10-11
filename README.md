@@ -42,3 +42,17 @@ python -m pytest -q
 The initial checks validate surface signals, not comprehensive Schema.org semantic correctness or full OpenAPI conformance. Next improvements: stronger tests, safe pinned-IP resolution, deeper OpenAPI validation, product and policy consistency, and before/after report comparison.
 
 MIT licensed. See [methodology](docs/methodology.md).
+
+## Compare before and after
+
+Save JSON reports, make your website changes, then compare:
+
+```bash
+agent-readiness scan https://example.com --output json > before.json
+# Deploy your changes
+agent-readiness scan https://example.com --output json > after.json
+agent-readiness compare before.json after.json
+agent-readiness compare before.json after.json --output markdown
+```
+
+Comparison labels failed-to-passed checks as **fixed**, passed-to-failed checks as **regressed**, and changes involving unknown or missing checks as **changed**. The comparison is offline and requires matching target URLs and profiles. A score delta is not a substitute for reviewing the check-level evidence.
