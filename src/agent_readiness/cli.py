@@ -31,6 +31,8 @@ def guard(url: str) -> str:
 
 def get(client: httpx.Client, url: str):
     try:
+        # Revalidation is a defense-in-depth check, not DNS pinning.
+        # This CLI must not be exposed as a multi-tenant URL fetcher.
         with client.stream("GET", guard(url), follow_redirects=False) as r:
             if r.is_redirect:
                 return None, "Redirect was not followed"
