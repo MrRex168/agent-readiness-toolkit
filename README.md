@@ -101,3 +101,18 @@ agent-readiness scan https://example.com --output json --min-score 80 > report.j
 ```
 
 Exit code `0` means all configured gates pass, `1` means a gate fails, and `2` means an invalid scan or input. Without gate options, scans remain reporting-only. Required checks with `unknown` or missing status do **not** pass. Use this only from a trusted environment: DNS-rebinding protection is not implemented for arbitrary hosted URL scanning.
+
+## Offline snapshot audits
+
+Audit previously collected website evidence **without making any HTTP or DNS requests**. Create a directory containing `manifest.json` and `index.html`; optionally include `robots.txt`, `sitemap.xml`, and `openapi.json` for API audits.
+
+```json
+{"url":"https://example.com"}
+```
+
+```bash
+agent-readiness snapshot ./evidence --output json > report.json
+agent-readiness snapshot ./evidence --profile api
+```
+
+For an API snapshot, include `"api_url":"https://example.com/openapi.json"` in the manifest and supply `openapi.json`. Missing optional files are reported as **unknown**, not as verified failures. Snapshot files must be at most 1 MB each. The snapshot command is intended for reproducible review of **locally obtained evidence**; it does not download websites or prove that the saved evidence is current.
