@@ -5,6 +5,7 @@ from urllib.parse import urljoin, urlsplit
 import httpx
 from bs4 import BeautifulSoup
 from .validators import sitemap_valid, jsonld_types
+from .robots import robots_evidence
 
 def evaluate(url: str, profile: str = "website", api_url: str | None = None, client: httpx.Client | None = None) -> dict:
     from .cli import guard, get
@@ -29,11 +30,18 @@ def evaluate(url: str, profile: str = "website", api_url: str | None = None, cli
         check("description", bool(desc and desc.get("content", "").strip()), 10, url, "Add accurate meta description")
         check("language", bool(soup.html and soup.html.get("lang")), 5, url, "Set html lang")
         check("main", soup.find("main") is not None, 10, url, "Add main landmark")
-        for path, weight, key, needle in [("/robots.txt",10,"robots","user-agent:"),("/sitemap.xml",10,"sitemap","<urlset")]:
+        for path, weight, key in [("/robots.txt",10,"robots"),("/sitemap.xml",10,"sitemap")]:
             target = urljoin(url,path)
             body, status = get(client,target)
-            check(key, None if body is None else isinstance(body,str) and (sitemap_valid(body) if key == "sitemap" else needle in body.lower()), weight,
-                  target + ": " + status, "Publish a valid " + path)
+            if body is None:
+                value, evidence = None, status
+            elif body is False:
+                value, evidence = False, status
+            elif key == "robots":
+                value, evidence = robots_evidence(body)
+            else:
+                value, evidence = sitemap_valid(body), "Valid sitemap XML" if sitemap_valid(body) else "Invalid sitemap XML"
+            check(key, value, weight, target + ": " + evidence, "Publish a valid " + path)
         valid, types = jsonld_types([s.string or s.get_text() for s in soup.find_all("script", attrs={"type":"application/ld+json"})])
         check("jsonld",valid,20,url+": "+str(types),"Add accurate JSON-LD describing the business")
         if profile == "api":
