@@ -89,3 +89,15 @@ agent-readiness benchmark report.json reference.json --min-accuracy 95
 ```
 
 Exit code `0` means the gate passed, `1` means agreement fell below the threshold, and `2` means invalid input. Without `--min-accuracy`, the command reports mismatches without failing the build. The gate measures agreement with **your reviewed expectations**, not actual agent performance.
+
+## CI scan gates
+
+Optionally fail a pipeline when a scan score is too low or a required check does not pass:
+
+```bash
+agent-readiness scan https://example.com --min-score 80
+agent-readiness scan https://example.com --require sitemap --require jsonld
+agent-readiness scan https://example.com --output json --min-score 80 > report.json
+```
+
+Exit code `0` means all configured gates pass, `1` means a gate fails, and `2` means an invalid scan or input. Without gate options, scans remain reporting-only. Required checks with `unknown` or missing status do **not** pass. Use this only from a trusted environment: DNS-rebinding protection is not implemented for arbitrary hosted URL scanning.

@@ -9,6 +9,7 @@ import httpx
 import typer
 from bs4 import BeautifulSoup
 from .core import evaluate
+from .gates import gate_report
 
 app = typer.Typer(add_completion=False)
 from .compare import reports as compare_reports
@@ -61,12 +62,13 @@ def audit(url: str, profile: str = "website", api_url: str | None = None, client
 
 
 @app.command()
-def scan(url: str, profile: str = "website", api_url: str = "", output: str = "terminal"):
+def scan(url: str, profile: str = "website", api_url: str = "", output: str = "terminal", min_score: int | None = None, require: list[str] | None = None):
     """Scan public HTTPS website or explicitly advertised API."""
     if output not in ("terminal", "json", "markdown"):
         raise typer.BadParameter("output must be terminal, json or markdown")
     try:
         report = evaluate(url, profile, api_url or None)
+        failures = gate_report(report, min_score, tuple(require or ()))
     except (ValueError, OSError) as exc:
         typer.echo(f"Audit error: {exc}", err=True)
         raise typer.Exit(2) from exc
@@ -82,6 +84,11 @@ def scan(url: str, profile: str = "website", api_url: str = "", output: str = "t
         typer.echo(f"Agent Readiness: {report['score']}/100")
         for f in report["findings"]:
             typer.echo(f"  {f['status']:7} {f['id']:20} {f['evidence']}")
+
+    if failures:
+        for failure in failures:
+            typer.echo(f"Scan gate failed: {failure}", err=True)
+        raise typer.Exit(1)
 
 if __name__ == "__main__":
     app()
