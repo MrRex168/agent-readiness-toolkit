@@ -1,27 +1,31 @@
 """Read-only audit checks and evidence-based scoring."""
 from __future__ import annotations
 import json
+from typing import Callable
 from urllib.parse import urljoin, urlsplit
 import httpx
 from bs4 import BeautifulSoup
 from .validators import sitemap_valid, jsonld_types
 from .robots import robots_evidence
 
-def evaluate(url: str, profile: str = "website", api_url: str | None = None, client: httpx.Client | None = None) -> dict:
+def evaluate(url: str, profile: str = "website", api_url: str | None = None, client: httpx.Client | None = None, *, fetch: Callable[[str], tuple[str | bool | None, str]] | None = None) -> dict:
     from .cli import guard, get
     if profile not in {"website", "api"}:
         raise ValueError("profile must be website or api")
-    guard(url)
-    if api_url and urlsplit(guard(api_url)).hostname != urlsplit(url).hostname:
+    if fetch is None:
+        guard(url)
+    if api_url and urlsplit(guard(api_url) if fetch is None else api_url).hostname != urlsplit(url).hostname:
         raise ValueError("API URL must share the website hostname")
-    own = client is None
-    client = client or httpx.Client(timeout=httpx.Timeout(8, connect=4), trust_env=False)
+    own = fetch is None and client is None
+    if fetch is None:
+        client = client or httpx.Client(timeout=httpx.Timeout(8, connect=4), trust_env=False)
+        fetch = lambda target: get(client, target)
     findings = []
     def check(key, value, weight, evidence, fix):
         findings.append({"id":key, "status":"unknown" if value is None else "pass" if value else "fail",
                          "weight":weight, "evidence":evidence, "fix":"" if value else fix})
     try:
-        html, detail = get(client, url)
+        html, detail = fetch(url)
         if not isinstance(html, str):
             raise ValueError("Root HTML unavailable: " + detail)
         soup = BeautifulSoup(html, "html.parser")
@@ -32,7 +36,7 @@ def evaluate(url: str, profile: str = "website", api_url: str | None = None, cli
         check("main", soup.find("main") is not None, 10, url, "Add main landmark")
         for path, weight, key in [("/robots.txt",10,"robots"),("/sitemap.xml",10,"sitemap")]:
             target = urljoin(url,path)
-            body, status = get(client,target)
+            body, status = fetch(target)
             if body is None:
                 value, evidence = None, status
             elif body is False:
@@ -51,7 +55,7 @@ def evaluate(url: str, profile: str = "website", api_url: str | None = None, cli
             if not api_url:
                 check("openapi",None,25,"No advertised specification","Provide --api-url to validate an API")
             else:
-                body,status = get(client,api_url)
+                body,status = fetch(api_url)
                 if body is None:
                     check("openapi",None,25,api_url+": "+status,"Make the document accessible")
                 else:
