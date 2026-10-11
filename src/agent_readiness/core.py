@@ -4,9 +4,9 @@ import json
 from urllib.parse import urljoin, urlsplit
 import httpx
 from bs4 import BeautifulSoup
-from .cli import guard, get
 
 def evaluate(url: str, profile: str = "website", api_url: str | None = None, client: httpx.Client | None = None) -> dict:
+    from .cli import guard, get
     if profile not in {"website", "api"}:
         raise ValueError("profile must be website or api")
     guard(url)
