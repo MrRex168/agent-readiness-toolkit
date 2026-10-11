@@ -13,6 +13,8 @@ from .core import evaluate
 app = typer.Typer(add_completion=False)
 from .compare import reports as compare_reports
 app.command("compare")(compare_reports)
+from .benchmark import benchmark_command
+app.command("benchmark")(benchmark_command)
 
 
 def guard(url: str) -> str:
