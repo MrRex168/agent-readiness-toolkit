@@ -5,7 +5,7 @@ from agent_readiness.cli import app
 from agent_readiness.gates import gate_report
 
 REPORT={"target":"https://example.com","profile":"website","score":80,
-        "findings":[{"id":"title","status":"pass"},{"id":"sitemap","status":"fail"},{"id":"openapi","status":"unknown"}]}
+        "findings":[{"id":"title","status":"pass","evidence":"title present","fix":""},{"id":"sitemap","status":"fail","evidence":"missing sitemap","fix":"Publish sitemap"},{"id":"openapi","status":"unknown","evidence":"not advertised","fix":""}]}
 
 def test_gate_defaults_are_opt_in():
     assert gate_report(REPORT)==[]
