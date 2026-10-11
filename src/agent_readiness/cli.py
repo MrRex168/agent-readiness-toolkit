@@ -8,6 +8,7 @@ from urllib.parse import urljoin, urlsplit
 import httpx
 import typer
 from bs4 import BeautifulSoup
+from .core import evaluate
 
 app = typer.Typer(add_completion=False)
 
@@ -118,7 +119,7 @@ def scan(url: str, profile: str = "website", api_url: str = "", output: str = "t
     if output not in ("terminal", "json", "markdown"):
         raise typer.BadParameter("output must be terminal, json or markdown")
     try:
-        report = audit(url, profile, api_url or None)
+        report = evaluate(url, profile, api_url or None)
     except (ValueError, OSError) as exc:
         typer.echo(f"Audit error: {exc}", err=True)
         raise typer.Exit(2) from exc
