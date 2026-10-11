@@ -19,7 +19,7 @@ agent-readiness scan https://api.example.com --profile api --api-url https://api
 ## What v0.1 checks
 
 - Page title, meta description, language and semantic main element
-- robots.txt, sitemap.xml and parseable JSON-LD
+- robots.txt, XML sitemap URL sets/indexes and typed JSON-LD with a context
 - API profile: explicit same-host OpenAPI JSON documents with essential keys
 - Each check includes status, evidence and a proposed fix
 - Weighted score with unknown checks excluded from the denominator
@@ -56,3 +56,7 @@ agent-readiness compare before.json after.json --output markdown
 ```
 
 Comparison labels failed-to-passed checks as **fixed**, passed-to-failed checks as **regressed**, and changes involving unknown or missing checks as **changed**. The comparison is offline and requires matching target URLs and profiles. A score delta is not a substitute for reviewing the check-level evidence.
+
+## Audit accuracy
+
+Sitemap checks parse XML and recognize both `urlset` and `sitemapindex` roots, including the standard sitemap namespace. JSON-LD checks require a context and at least one typed entity, including entities nested in an `@graph`. This is **not** a full Schema.org validation: it checks structural evidence, not whether claims are accurate or complete.
