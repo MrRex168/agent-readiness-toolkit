@@ -23,7 +23,7 @@ python -m pytest -q
 ## Known gaps and future validation
 
 - Current OpenAPI validation checks essential JSON keys, not full OpenAPI conformance.
-- Robots.txt validation is a basic text check, not a complete robots exclusion parser.
+- Robots.txt validation checks basic directive syntax and User-agent groups. It does not evaluate bot-specific crawl permissions or implement a complete robots exclusion parser.
 - Synthetic fixtures cannot establish accuracy against live websites.
 - The scanner's DNS preflight does not pin the validated address at connection time. **Do not expose arbitrary URL scanning as a public service.**
 - Next: curated, manually reviewed live audit cases with permission and evidence snapshots; keep them separate from deterministic CI tests.
