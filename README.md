@@ -79,3 +79,13 @@ agent-readiness benchmark report.json reference.json --output json
 ```
 
 See [benchmarking methodology](docs/benchmarking.md). This measures agreement with human-reviewed expectations; no live benchmark results are claimed yet.
+
+## CI benchmark gate
+
+Use a reviewed reference file to fail CI when check-level agreement falls below a chosen threshold:
+
+```bash
+agent-readiness benchmark report.json reference.json --min-accuracy 95
+```
+
+Exit code `0` means the gate passed, `1` means agreement fell below the threshold, and `2` means invalid input. Without `--min-accuracy`, the command reports mismatches without failing the build. The gate measures agreement with **your reviewed expectations**, not actual agent performance.

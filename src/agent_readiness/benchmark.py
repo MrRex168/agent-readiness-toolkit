@@ -32,9 +32,11 @@ def assess(report: dict, expectations: dict) -> dict:
             "note":"Agreement with reviewed expectations, not proof of AI-agent success."}
 
 @app.command("benchmark")
-def benchmark_command(report: Path, reference: Path, output: str = "terminal"):
+def benchmark_command(report: Path, reference: Path, output: str = "terminal", min_accuracy: float | None = None):
     """Evaluate a saved audit report against manually reviewed expectations."""
     try:
+        if min_accuracy is not None and (not 0 <= min_accuracy <= 100 or min_accuracy != min_accuracy):
+            raise ValueError("--min-accuracy must be between 0 and 100")
         for path in (report,reference):
             if path.stat().st_size > 2_000_000:
                 raise ValueError("File exceeds 2 MB")
@@ -51,3 +53,6 @@ def benchmark_command(report: Path, reference: Path, output: str = "terminal"):
                 typer.echo(f"MISMATCH {item['check']}: expected {item['expected']}, got {item['actual']}")
     else:
         raise typer.BadParameter("output must be terminal or json")
+    if min_accuracy is not None and result["accuracy"] < min_accuracy:
+        typer.echo(f"Benchmark gate failed: {result['accuracy']}% below {min_accuracy}% minimum", err=True)
+        raise typer.Exit(1)
