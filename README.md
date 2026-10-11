@@ -60,3 +60,7 @@ Comparison labels failed-to-passed checks as **fixed**, passed-to-failed checks 
 ## Audit accuracy
 
 Sitemap checks parse XML and recognize both `urlset` and `sitemapindex` roots, including the standard sitemap namespace. JSON-LD checks require a context and at least one typed entity, including entities nested in an `@graph`. This is **not** a full Schema.org validation: it checks structural evidence, not whether claims are accurate or complete.
+
+## Reproducible validation
+
+The [validation matrix](docs/validation.md) documents deterministic website and API scenarios, expected results, and current accuracy limitations. Run `python -m pytest -q` to verify behavior without accessing external websites.
