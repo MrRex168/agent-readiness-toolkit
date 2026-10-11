@@ -68,3 +68,14 @@ The [validation matrix](docs/validation.md) documents deterministic website and 
 ## Python integration
 
 Use `agent_readiness.core.evaluate(url, profile="website")` as the canonical Python entrypoint. The older `agent_readiness.cli.audit(...)` function remains as a compatibility alias and delegates to the same engine. The CLI `scan` command also uses `evaluate`.
+
+## Benchmark audit accuracy
+
+Compare a saved JSON report against manually reviewed expected check statuses:
+
+```bash
+agent-readiness benchmark report.json reference.json
+agent-readiness benchmark report.json reference.json --output json
+```
+
+See [benchmarking methodology](docs/benchmarking.md). This measures agreement with human-reviewed expectations; no live benchmark results are claimed yet.
