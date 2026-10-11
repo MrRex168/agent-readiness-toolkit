@@ -11,6 +11,8 @@ from bs4 import BeautifulSoup
 from .core import evaluate
 
 app = typer.Typer(add_completion=False)
+from .compare import reports as compare_reports
+app.command("compare")(compare_reports)
 
 
 def guard(url: str) -> str:
