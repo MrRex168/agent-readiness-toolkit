@@ -4,6 +4,7 @@ import json
 from urllib.parse import urljoin, urlsplit
 import httpx
 from bs4 import BeautifulSoup
+from .validators import sitemap_valid, jsonld_types
 
 def evaluate(url: str, profile: str = "website", api_url: str | None = None, client: httpx.Client | None = None) -> dict:
     from .cli import guard, get
@@ -31,20 +32,9 @@ def evaluate(url: str, profile: str = "website", api_url: str | None = None, cli
         for path, weight, key, needle in [("/robots.txt",10,"robots","user-agent:"),("/sitemap.xml",10,"sitemap","<urlset")]:
             target = urljoin(url,path)
             body, status = get(client,target)
-            check(key, None if body is None else isinstance(body,str) and needle in body.lower(), weight,
+            check(key, None if body is None else isinstance(body,str) and (sitemap_valid(body) if key == "sitemap" else needle in body.lower()), weight,
                   target + ": " + status, "Publish a valid " + path)
-        valid = False
-        types = []
-        for script in soup.find_all("script", attrs={"type":"application/ld+json"}):
-            try:
-                obj = json.loads(script.string or script.get_text())
-                if isinstance(obj,dict):
-                    valid = True
-                    types.append(str(obj.get("@type","")))
-                elif isinstance(obj,list) and any(isinstance(x,dict) for x in obj):
-                    valid = True
-            except (ValueError,TypeError):
-                pass
+        valid, types = jsonld_types([s.string or s.get_text() for s in soup.find_all("script", attrs={"type":"application/ld+json"})])
         check("jsonld",valid,20,url+": "+str(types),"Add accurate JSON-LD describing the business")
         if profile == "api":
             if not api_url:
