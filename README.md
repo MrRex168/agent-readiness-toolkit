@@ -64,3 +64,7 @@ Sitemap checks parse XML and recognize both `urlset` and `sitemapindex` roots, i
 ## Reproducible validation
 
 The [validation matrix](docs/validation.md) documents deterministic website and API scenarios, expected results, and current accuracy limitations. Run `python -m pytest -q` to verify behavior without accessing external websites.
+
+## Python integration
+
+Use `agent_readiness.core.evaluate(url, profile="website")` as the canonical Python entrypoint. The older `agent_readiness.cli.audit(...)` function remains as a compatibility alias and delegates to the same engine. The CLI `scan` command also uses `evaluate`.
