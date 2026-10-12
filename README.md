@@ -16,6 +16,19 @@ agent-readiness scan https://example.com --output markdown
 agent-readiness scan https://api.example.com --profile api --api-url https://api.example.com/openapi.json
 ```
 
+## Try the 30-second offline demo
+
+After cloning and installing the repository, run:
+
+```bash
+agent-readiness snapshot examples/demo-site --output terminal
+agent-readiness snapshot examples/demo-before --output json > before.json
+agent-readiness snapshot examples/demo-site --output json > after.json
+agent-readiness compare before.json after.json
+```
+
+This demo uses **synthetic evidence**, requires no website requests, and illustrates individual findings plus before/after changes. See [the demo walkthrough](examples/README.md).
+
 ## What v0.1 checks
 
 - Page title, meta description, language and semantic main element
