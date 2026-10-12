@@ -7,7 +7,7 @@ This workflow is intended for maintainers who cannot run the CLI locally.
 3. Download the **real-world-audit-evidence** artifact from the run.
 4. Upload the ZIP for independent review or inspect it yourself.
 
-The workflow collects bounded HTML, robots.txt and sitemap evidence for three **fixed public targets**: `www.python.org`, `www.djangoproject.com` and `www.wikipedia.org`. There is no arbitrary URL input.
+The workflow collects bounded HTML, robots.txt and sitemap evidence for three **fixed public targets**: `www.python.org`, `www.djangoproject.com` and `www.mozilla.org`. There is no arbitrary URL input.
 
 ## Artifact layout
 
