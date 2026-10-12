@@ -20,7 +20,7 @@ from agent_readiness.review import make_template
 TARGETS = (
     "https://www.python.org",
     "https://www.djangoproject.com",
-    "https://www.wikipedia.org",
+    "https://www.mozilla.org",
 )
 RESOURCES = {"index.html": "", "robots.txt": "/robots.txt", "sitemap.xml": "/sitemap.xml"}
 MAX_BYTES = 1_000_000
