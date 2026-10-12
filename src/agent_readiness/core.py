@@ -7,6 +7,7 @@ import httpx
 from bs4 import BeautifulSoup
 from .validators import sitemap_valid, jsonld_types
 from .robots import robots_evidence
+from .openapi import openapi_evidence
 
 def evaluate(url: str, profile: str = "website", api_url: str | None = None, client: httpx.Client | None = None, *, fetch: Callable[[str], tuple[str | bool | None, str]] | None = None) -> dict:
     from .cli import guard, get
@@ -59,12 +60,8 @@ def evaluate(url: str, profile: str = "website", api_url: str | None = None, cli
                 if body is None:
                     check("openapi",None,25,api_url+": "+status,"Make the document accessible")
                 else:
-                    try:
-                        obj=json.loads(body)
-                        ok=isinstance(obj,dict) and ("openapi" in obj or "swagger" in obj) and isinstance(obj.get("info"),dict) and isinstance(obj.get("paths"),dict)
-                    except ValueError:
-                        ok=False
-                    check("openapi",ok,25,api_url+": "+status,"Publish valid OpenAPI JSON")
+                    ok, evidence = openapi_evidence(body) if isinstance(body,str) else (False,status)
+                    check("openapi",ok,25,api_url+": "+evidence,"Publish a structurally valid OpenAPI JSON document")
         denominator=sum(x["weight"] for x in findings if x["status"]!="unknown")
         numerator=sum(x["weight"] for x in findings if x["status"]=="pass")
         return {"target":url,"profile":profile,"score":round(numerator*100/denominator) if denominator else None,
