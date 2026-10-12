@@ -11,8 +11,10 @@ This is a **release candidate checklist**, not evidence that the project has bee
 
 ## Manual gates
 
-- [ ] Complete the [real-world validation protocol](real-world-validation.md) on at least three independently reviewed, permission-appropriate website evidence sets
-- [ ] Save evidence hashes and document mismatches in `docs/benchmarking.md` workflow
+- [x] Collect and inspect three fixed public-site evidence sets; see [limited validation record](validation-results-v0.1.0.md). This is not external certification.
+
+- [ ] Obtain independent reviewer sign-off on the three-site findings if required for the formal release gate
+- [x] Save evidence hashes and document observed mismatches and corrections in [validation results](validation-results-v0.1.0.md)
 - [ ] Confirm CLI JSON output and exit codes are useful for scripting
 - [ ] Review README installation instructions and usage against the actual built wheel
 - [ ] Review license, security limitations, supported Python versions, [changelog](../CHANGELOG.md) and [draft release notes](release-notes-v0.1.0.md)
