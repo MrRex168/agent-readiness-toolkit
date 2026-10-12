@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urljoin
@@ -51,6 +52,10 @@ def collect_one(url: str, root: Path, client: httpx.Client) -> dict:
                 manifest["sha256"][filename] = digest
                 item["sha256"] = digest
                 item["bytes"] = len(raw)
+        elif body is False and filename != "index.html":
+            match = re.fullmatch(r"HTTP ([45][0-9]{2})", detail)
+            if match:
+                manifest.setdefault("http_status", {})[filename] = int(match.group(1))
         record["resources"][filename] = item
 
     (folder / "collection.json").write_text(json.dumps(record, indent=2) + "\n")

@@ -30,6 +30,12 @@ def snapshot_audit(directory: Path, *, profile: str = "website") -> dict:
         files["openapi.json"] = api_url
     if any(name not in files for name in checksums):
         raise ValueError("sha256 contains an unsupported filename")
+    http_status = manifest.get("http_status", {})
+    if not isinstance(http_status, dict) or any(name not in files or name == "index.html" for name in http_status):
+        raise ValueError("http_status must map supported optional filenames to HTTP codes")
+    for name, code in http_status.items():
+        if type(code) is not int or not 400 <= code <= 599:
+            raise ValueError(f"http_status for {name} must be an HTTP 4xx or 5xx code")
     evidence={}
     fingerprints={}
     for filename,target in files.items():
@@ -37,8 +43,11 @@ def snapshot_audit(directory: Path, *, profile: str = "website") -> dict:
         if path.is_symlink():
             raise ValueError(f"Snapshot symlinks are not allowed: {filename}")
         if not path.is_file():
-            evidence[target]=(None,"Not supplied in snapshot")
+            code = http_status.get(filename)
+            evidence[target] = (False, f"HTTP {code}") if code is not None else (None, "Not supplied in snapshot")
             continue
+        if filename in http_status:
+            raise ValueError(f"Conflicting HTTP failure and saved body for {filename}")
         if path.stat().st_size > MAX_BYTES:
             evidence[target]=(None,"Snapshot file exceeds 1 MB")
             continue
