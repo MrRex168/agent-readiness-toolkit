@@ -154,3 +154,7 @@ The project is preparing its first GitHub release. See the [v0.1.0 release check
 ## OpenAPI evidence checks
 
 For the API profile, the scanner checks that a JSON document declares an OpenAPI 3.x or Swagger 2.0 version, includes non-empty `info.title` and `info.version`, and contains structurally valid `paths` and operation objects. Failed checks now include a specific reason. **This is not full OpenAPI conformance validation**: schemas, references, parameter definitions and responses are not comprehensively checked. YAML specifications are not supported in this version.
+
+## Validate without a local Python environment
+
+Maintainers can manually run the [GitHub-hosted public-site audit](docs/github-hosted-validation.md) to collect candidate reports and blank independent review worksheets. This is an opt-in workflow for three fixed public targets, not a completed accuracy benchmark. Independent evidence review remains required.
