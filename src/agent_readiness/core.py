@@ -34,7 +34,7 @@ def evaluate(url: str, profile: str = "website", api_url: str | None = None, cli
         desc = soup.find("meta", attrs={"name":"description"})
         check("description", bool(desc and desc.get("content", "").strip()), 10, url, "Add accurate meta description")
         check("language", bool(soup.html and soup.html.get("lang")), 5, url, "Set html lang")
-        check("main", soup.find("main") is not None, 10, url, "Add main landmark")
+        check("main", soup.find("main") is not None or soup.find(attrs={"role": lambda value: isinstance(value, str) and "main" in value.lower().split()}) is not None, 10, url, "Add main landmark")
         for path, weight, key in [("/robots.txt",10,"robots"),("/sitemap.xml",10,"sitemap")]:
             target = urljoin(url,path)
             body, status = fetch(target)
