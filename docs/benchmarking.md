@@ -6,7 +6,7 @@ The benchmark command measures **agreement with manually reviewed expectations**
 
 1. Run `agent-readiness scan https://example.com --output json > report.json` in a trusted local environment.
 2. Inspect the website's actual HTML, robots.txt, sitemap, JSON-LD and (if applicable) API specification.
-3. Record manually verified expected statuses in `reference.json`:
+3. Generate an **unreviewed** template, then independently inspect evidence and replace each `null` with `pass`, `fail` or `unknown`:\n\n```bash\nagent-readiness review-template report.json > reference.json\n```\n\nDo **not** copy the observed scanner statuses into the expected answers. An incomplete template intentionally fails the benchmark. Keep reviewer name, review date, original evidence URLs and notes with your study records. The generated template includes `_review_instructions` and `_review_notes` for guidance.\n\nExample of a completed `reference.json`:
 
 ```json
 {
