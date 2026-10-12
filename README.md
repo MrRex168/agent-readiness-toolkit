@@ -87,6 +87,8 @@ Use `agent_readiness.core.evaluate(url, profile="website")` as the canonical Pyt
 Compare a saved JSON report against manually reviewed expected check statuses:
 
 ```bash
+agent-readiness review-template report.json > reference.json
+# Independently review evidence and fill in expected statuses in reference.json
 agent-readiness benchmark report.json reference.json
 agent-readiness benchmark report.json reference.json --output json
 ```
