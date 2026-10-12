@@ -28,6 +28,6 @@ agent-readiness snapshot examples/demo-site --output terminal
 
 ## Important limits
 
-Live URL scanning is **not suitable for multi-tenant hosted use** because DNS resolution is not pinned to the screened address. Results do not prove AI search ranking, agent compatibility or successful transactions. Real-world accuracy benchmarks remain pending independent review.
+Live URL scanning is **not suitable for multi-tenant hosted use** because DNS resolution is not pinned to the screened address. Results do not prove AI search ranking, agent compatibility or successful transactions. A limited three-site evidence review is documented in [validation results](validation-results-v0.1.0.md). This is not a representative accuracy benchmark or external certification.
 
 Python 3.10+; MIT licensed.
