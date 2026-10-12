@@ -27,8 +27,8 @@ def test_capture_success_creates_reviewable_snapshot(tmp_path):
 
 def test_blocked_homepage_creates_no_empty_report(tmp_path):
     with patch("scripts.collect_validation_evidence.guard",side_effect=lambda u:u), patch("scripts.collect_validation_evidence.get",return_value=(False,"HTTP 403")):
-        result=collect_one("https://www.wikipedia.org",tmp_path,FakeClient())
-    folder=tmp_path/"www_wikipedia_org"
+        result=collect_one("https://www.mozilla.org",tmp_path,FakeClient())
+    folder=tmp_path/"www_mozilla_org"
     assert result["status"]=="blocked"
     assert not (folder/"report.json").exists()
     assert not (folder/"manifest.json").exists()
