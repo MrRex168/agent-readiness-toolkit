@@ -130,7 +130,7 @@ agent-readiness snapshot ./evidence --output json > report.json
 agent-readiness snapshot ./evidence --profile api
 ```
 
-For an API snapshot, include `"api_url":"https://example.com/openapi.json"` in the manifest and supply `openapi.json`. Missing optional files are reported as **unknown**, not as verified failures. Snapshot files must be at most 1 MB each. The snapshot command is intended for reproducible review of **locally obtained evidence**; it does not download websites or prove that the saved evidence is current.
+For an API snapshot, include `"api_url":"https://example.com/openapi.json"` in the manifest and supply `openapi.json`. Missing optional files are **unknown** unless the manifest records a confirmed HTTP 4xx/5xx failure in an `http_status` mapping, such as `"http_status":{"sitemap.xml":404}`. Confirmed HTTP failures count as **fail**. Snapshot files must be at most 1 MB each. The snapshot command is intended for reproducible review of **locally obtained evidence**; it does not download websites or prove that the saved evidence is current.
 
 ## Verify snapshot evidence integrity
 
