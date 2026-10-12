@@ -31,4 +31,5 @@ jobs:
       - run: agent-readiness scan --help
       - run: agent-readiness compare --help
       - run: agent-readiness benchmark --help
+      - run: agent-readiness review-template --help
       - run: agent-readiness snapshot --help
