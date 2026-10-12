@@ -158,3 +158,7 @@ For the API profile, the scanner checks that a JSON document declares an OpenAPI
 ## Validate without a local Python environment
 
 Maintainers can manually run the [GitHub-hosted public-site audit](docs/github-hosted-validation.md) to collect candidate reports and blank independent review worksheets. This is an opt-in workflow for three fixed public targets, not a completed accuracy benchmark. Independent evidence review remains required.
+
+## Limited real-world validation
+
+The [v0.1.0 validation record](docs/validation-results-v0.1.0.md) documents 21 check outcomes across three public websites, the identified corrections and source integrity hashes. This is a small manual evidence review, **not** a representative accuracy estimate or proof of agent compatibility.
