@@ -1,15 +1,19 @@
 # Agent Readiness Toolkit
 
-**Audit what's actually machine-readable and discoverable on your website or API.**
+**Audit your website or API's machine-readability. Get a score, evidence, and actionable fixes.**
 
-Evidence-based open-source CLI for developers, API teams and technical SEO practitioners. It reports observed signals, gives actionable fixes, and avoids penalizing websites simply for not using optional emerging agent protocols.
+Free, open-source Python CLI for developers, API teams and technical SEO practitioners. Check observable signals that automated systems can use to interpret websites and APIs, compare changes and add quality gates to CI. **No API key or LLM required.**
+
+[![Release](https://img.shields.io/github/v/release/MrRex168/agent-readiness-toolkit)](https://github.com/MrRex168/agent-readiness-toolkit/releases/latest) [![CI](https://github.com/MrRex168/agent-readiness-toolkit/actions/workflows/tests.yml/badge.svg)](https://github.com/MrRex168/agent-readiness-toolkit/actions/workflows/tests.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+**In 30 seconds:** scan a public HTTPS website → inspect failed checks and supporting evidence → fix issues → compare before/after results. Scores are technical signals, not proof of AI-agent compatibility.
 
 ## Quick start
 
 Requires Python 3.10+.
 
 ```bash
-python -m pip install .
+python -m pip install "git+https://github.com/MrRex168/agent-readiness-toolkit.git@v0.1.0"
 agent-readiness scan https://example.com
 agent-readiness scan https://example.com --output json
 agent-readiness scan https://example.com --output markdown
@@ -18,7 +22,7 @@ agent-readiness scan https://api.example.com --profile api --api-url https://api
 
 ## Try the 30-second offline demo
 
-After cloning and installing the repository, run:
+Clone the repository and install it as shown in [Development](#development), then run:
 
 ```bash
 agent-readiness snapshot examples/demo-site --output terminal
@@ -31,7 +35,7 @@ This demo uses **synthetic evidence**, requires no website requests, and illustr
 
 ## What v0.1 checks
 
-- Page title, meta description, language and semantic main element
+- Page title, meta description, language and main landmark (`<main>` or `role="main"`)
 - robots.txt, XML sitemap URL sets/indexes and typed JSON-LD with a context
 - API profile: explicit same-host OpenAPI JSON documents with essential keys
 - Each check includes status, evidence and a proposed fix
@@ -93,7 +97,7 @@ agent-readiness benchmark report.json reference.json
 agent-readiness benchmark report.json reference.json --output json
 ```
 
-See [benchmarking methodology](docs/benchmarking.md). This measures agreement with human-reviewed expectations; no live benchmark results are claimed yet.
+See [benchmarking methodology](docs/benchmarking.md). This measures agreement with human-reviewed expectations; the [limited three-site review](docs/validation-results-v0.1.0.md) is not a representative accuracy benchmark.
 
 ## CI benchmark gate
 
@@ -149,7 +153,7 @@ The snapshot command rejects checksum mismatches, invalid digests, checksums for
 
 ## Release status
 
-The project is preparing its first GitHub release. See the [v0.1.0 release checklist](docs/release-checklist.md), [real-world validation protocol](docs/real-world-validation.md), [changelog](CHANGELOG.md) and [draft release notes](docs/release-notes-v0.1.0.md). Passing CI alone does not establish real-world audit accuracy.
+**v0.1.0 is released.** [Download the release](https://github.com/MrRex168/agent-readiness-toolkit/releases/tag/v0.1.0), review the [changelog](CHANGELOG.md), [validation record](docs/validation-results-v0.1.0.md), and [validation protocol](docs/real-world-validation.md). Passing CI alone does not establish real-world audit accuracy.
 
 ## OpenAPI evidence checks
 
@@ -157,7 +161,7 @@ For the API profile, the scanner checks that a JSON document declares an OpenAPI
 
 ## Validate without a local Python environment
 
-Maintainers can manually run the [GitHub-hosted public-site audit](docs/github-hosted-validation.md) to collect candidate reports and blank independent review worksheets. This is an opt-in workflow for three fixed public targets, not a completed accuracy benchmark. Independent evidence review remains required.
+Maintainers can manually run the [GitHub-hosted public-site audit](docs/github-hosted-validation.md) to collect candidate reports and blank independent review worksheets. This is an opt-in workflow for three fixed public targets, not a representative accuracy benchmark. Review captured evidence independently before drawing conclusions.
 
 ## Limited real-world validation
 
