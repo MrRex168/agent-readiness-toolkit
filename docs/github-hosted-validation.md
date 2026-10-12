@@ -18,7 +18,7 @@ The workflow collects bounded HTML, robots.txt and sitemap evidence for three **
 - `<site>/report.json`: offline audit of **the exact saved evidence**
 - `<site>/review.json`: independent review worksheet with intentionally blank expectations
 
-A blocked homepage does **not** create a misleading empty report. Optional unavailable resources remain unknown in offline audit results.
+A blocked homepage does **not** create a misleading empty report. Optional resources with confirmed HTTP 4xx/5xx responses are recorded in `manifest.json` as `http_status` and treated as failed checks. Missing resources without a confirmed HTTP failure (including redirects and network errors) remain unknown.
 
 **Important:** These are candidate observations, not independently validated accuracy results. A reviewer must inspect the captured files, fill in expected statuses and document mismatches. The workflow does not automatically verify website claims or AI-agent success. Review [the validation protocol](real-world-validation.md) and [release gate issue](https://github.com/MrRex168/agent-readiness-toolkit/issues/17).
 
