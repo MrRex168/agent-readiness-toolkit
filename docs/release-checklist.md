@@ -6,16 +6,16 @@ This is a **release candidate checklist**, not evidence that the project has bee
 
 - [ ] Python 3.10, 3.11, 3.12 and 3.13 unit tests pass
 - [ ] Wheel and source distribution build successfully
-- [ ] Install the built wheel and run help for all five CLI entrypoints
+- [ ] Install the built wheel and run help for all six CLI commands (scan, compare, benchmark, review-template, snapshot, and top-level help)
 - [ ] Offline snapshot, comparison and benchmark tests pass
 
 ## Manual gates
 
-- [ ] Run `agent-readiness snapshot` on at least three manually reviewed, permission-appropriate website evidence sets
+- [ ] Complete the [real-world validation protocol](real-world-validation.md) on at least three independently reviewed, permission-appropriate website evidence sets
 - [ ] Save evidence hashes and document mismatches in `docs/benchmarking.md` workflow
 - [ ] Confirm CLI JSON output and exit codes are useful for scripting
 - [ ] Review README installation instructions and usage against the actual built wheel
-- [ ] Review license, security limitations, supported Python versions and changelog
+- [ ] Review license, security limitations, supported Python versions, [changelog](../CHANGELOG.md) and [draft release notes](release-notes-v0.1.0.md)
 - [ ] Decide whether remaining real-world false positives block release
 
 ## Security and claims
@@ -27,6 +27,6 @@ Readiness scores measure observable technical signals only. They do not prove th
 ## Suggested release steps
 
 1. Merge the release-check PR after all CI jobs pass.
-2. Complete and record manual benchmark reviews.
+2. Complete and record manual benchmark reviews using [the validation protocol](real-world-validation.md).
 3. Publish a GitHub release tagged `v0.1.0` only after reviewing the final release candidate.
 4. Launch with a short, evidence-based demo and transparent limitations.

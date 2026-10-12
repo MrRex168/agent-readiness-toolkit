@@ -149,7 +149,7 @@ The snapshot command rejects checksum mismatches, invalid digests, checksums for
 
 ## Release status
 
-The project is preparing its first GitHub release. See the [v0.1.0 release checklist](docs/release-checklist.md) for automated and manual acceptance criteria. Passing CI alone does not establish real-world audit accuracy.
+The project is preparing its first GitHub release. See the [v0.1.0 release checklist](docs/release-checklist.md), [real-world validation protocol](docs/real-world-validation.md), [changelog](CHANGELOG.md) and [draft release notes](docs/release-notes-v0.1.0.md). Passing CI alone does not establish real-world audit accuracy.
 
 ## OpenAPI evidence checks
 
