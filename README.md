@@ -39,7 +39,7 @@ python -m pytest -q
 
 ## Scope
 
-The initial checks validate surface signals, not comprehensive Schema.org semantic correctness or full OpenAPI conformance. Next improvements: stronger tests, safe pinned-IP resolution, deeper OpenAPI validation, product and policy consistency, and before/after report comparison.
+The checks validate surface signals, not comprehensive Schema.org semantic correctness or full OpenAPI conformance. The CLI also supports before/after comparisons, benchmark agreement gates, CI scan gates and offline evidence snapshots. Planned improvements include pinned-IP resolution for hosted use, deeper API validation and evidence-backed real-world benchmark cases.
 
 MIT licensed. See [methodology](docs/methodology.md).
 
@@ -131,3 +131,7 @@ For reproducible reviews, optionally add SHA-256 digests of saved files to `mani
 ```
 
 The snapshot command rejects checksum mismatches, invalid digests, checksums for missing files, and symbolic links. Every successful snapshot report includes `evidence_sha256` fingerprints, even if the manifest omits checksums. Hashes demonstrate file consistency, **not** that the files originated from the stated website or reflect its current state.
+
+## Release status
+
+The project is preparing its first GitHub release. See the [v0.1.0 release checklist](docs/release-checklist.md) for automated and manual acceptance criteria. Passing CI alone does not establish real-world audit accuracy.
